@@ -1,3 +1,4 @@
+VLAD, [20.10.2025 11:37]
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils import executor
@@ -5,8 +6,8 @@ import asyncio
 import subprocess
 import sys
 import os
+TOKEN = os.getenv("8285721437:AAEU7LArZhK_U9UWbbCL4eMGR59DP6cFFNY")
 
-TOKEN = "8285721437:AAEU7LArZhK_U9UWbbCL4eMGR59DP6cFFNY"
 ADMIN_ID = 7816829354  # 👈 Теперь админ получает уведомления корректно
 
 bot = Bot(token=TOKEN)
@@ -75,6 +76,7 @@ cities = {
     "Россия": ["Москва", "Санкт-Петербург", "Казань", "Новосибирск", "Екатеринбург", "Нижний Новгород", "Самара", "Челябинск", "Ростов-на-Дону", "Уфа"]
 }
 
+VLAD, [20.10.2025 11:37]
 districts = {
     "Киев": ["Оболонский", "Подол", "Шевченковский", "Печерский", "Дарницкий", "Святошинский", "Деснянский", "Голосеевский"],
     "Львов": ["Галицкий", "Франковский", "Шевченковский", "Сыховский", "Зализнычный", "Лычаковский"],
@@ -147,6 +149,7 @@ async def start_handler(message: types.Message):
     welcome = "🎉🎉 Добро пожаловать! 🎉🎉\nВыберите товар:"
     await message.answer(welcome, reply_markup=send_products_keyboard(message.chat))
 
+VLAD, [20.10.2025 11:37]
 # ====== Выбор товара ======
 @dp.message_handler(lambda message: message.text in products_info.keys())
 async def choose_product(message: types.Message):
@@ -236,6 +239,7 @@ async def confirm_payment(message: types.Message):
 async def final_message(message: types.Message):
     await message.answer("🎉 Спасибо за покупку в нашем магазине! 💫 Возвращайтесь снова! 🎁")
 
+VLAD, [20.10.2025 11:37]
 # ====== Назад (один уровень) ======
 @dp.message_handler(lambda message: message.text == "⬅️ Назад")
 async def go_back(message: types.Message):
@@ -303,7 +307,7 @@ def spawn_detached():
         return False
 
     # создаём небольшой lock-файл чтобы не спавнить несколько раз подряд
-    lock_path = os.path.join(os.path.dirname(__file__), "bot_background.lock")
+    lock_path = os.path.join(os.path.dirname(file), "bot_background.lock")
     try:
         # если lock существует, возможно уже есть фон. не спавним.
         if os.path.exists(lock_path):
@@ -314,18 +318,19 @@ def spawn_detached():
     except Exception:
         pass
 
-    try:
+VLAD, [20.10.2025 11:37]
+try:
         if os.name == 'nt':
             # Windows: используем CREATE_NEW_PROCESS_GROUP и DETACHED_PROCESS
             CREATE_NEW_PROCESS_GROUP = 0x00000200
             DETACHED_PROCESS = 0x00000008
-            subprocess.Popen([sys.executable, __file__, "run_bot"],
+            subprocess.Popen([sys.executable, file, "run_bot"],
                              stdout=open("bot.log", "a"),
                              stderr=open("bot_error.log", "a"),
                              creationflags=CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS)
         else:
             # POSIX: используем setsid для отделения
-            subprocess.Popen([sys.executable, __file__, "run_bot"],
+            subprocess.Popen([sys.executable, file, "run_bot"],
                              stdout=open("bot.log", "a"),
                              stderr=open("bot_error.log", "a"),
                              preexec_fn=os.setsid)
@@ -334,7 +339,7 @@ def spawn_detached():
         print("Не удалось спавнить detached процесс:", e)
         return False
 
-if __name__ == "__main__":
+if name == "main":
     # Попытка запустить детачед-процесс (если он ещё не создан).
     spawned = spawn_detached()
     if spawned:
